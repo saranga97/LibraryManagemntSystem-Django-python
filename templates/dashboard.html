@@ -1,0 +1,10 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<h1>Welcome to the Dashboard, {{ user.username }}</h1>
+<p>Email: {{ user.email }}</p>
+
+<!-- Add links to catalog and my_books here -->
+<a href="{% url 'catalog' %}">Catalog</a>
+<a href="{% url 'my_books' %}">My Books</a>
+{% endblock %}

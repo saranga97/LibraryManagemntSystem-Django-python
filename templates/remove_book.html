@@ -1,0 +1,18 @@
+<!-- library/templates/remove_book.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Book</title>
+</head>
+<body>
+    <h2>Confirm Removal</h2>
+    <p>Are you sure you want to remove the book "{{ book.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirm</button>
+    </form>
+</body>
+</html>

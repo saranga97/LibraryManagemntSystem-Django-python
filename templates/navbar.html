@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Colombo City Library{% endblock %}</title>
+    <!-- Custom CSS -->
+    <style>
+        /* Reset default margin and padding for body and html elements */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif; /* Use a different font */
+        }
+
+        /* Add your navbar styling here */
+        .navbar {
+            background-color: #333;
+            color: white;
+            padding: 5px; /* Smaller padding */
+            
+            margin: 0; /* Remove any margin */
+            height: 80px; /* Set smaller height */
+            line-height: 50px; /* Center text vertically */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1 style="color: white;">Colombo City Library</h1>
+    </div>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
