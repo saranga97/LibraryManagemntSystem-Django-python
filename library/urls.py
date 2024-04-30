@@ -15,4 +15,5 @@ urlpatterns = [
     path('borrow/', views.borrow_book, name='borrow_book'),
     path('my_books/', views.my_books, name='my_books'),
     path('accounts/', include('django.contrib.auth.urls')),  # Include authentication URLs
+    path('add_book/', views.add_book, name='add_book'),
 ]

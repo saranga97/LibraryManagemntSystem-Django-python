@@ -32,28 +32,155 @@
         <h1>Welcome, {{ admin_user.username }}!</h1>
         <p>Email: {{ admin_user.email }}</p>
         
-        <h2>Add a New Book</h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="title" class="form-label">Title:</label>
-                <input type="text" id="title" name="title" class="form-control">
+       <!-- Add Book Modal -->
+<!-- Add Book Modal -->
+<!-- Add Book Modal -->
+<div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBookModalLabel">Add Book</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="mb-3">
-                <label for="author" class="form-label">Author:</label>
-                <input type="text" id="author" name="author" class="form-control">
+            <div class="modal-body">
+                <form id="addBookForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Author</label>
+                        <input type="text" class="form-control" id="author" name="author" placeholder="Enter author">
+                    </div>
+                    <div class="mb-3">
+                        <label for="isbn" class="form-label">ISBN</label>
+                        <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Enter ISBN">
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <input type="text" class="form-control" id="category" name="category" placeholder="Enter category">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Book</button>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="isbn" class="form-label">ISBN:</label>
-                <input type="text" id="isbn" name="isbn" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="category" class="form-label">Category:</label>
-                <input type="text" id="category" name="category" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-primary">Add Book</button>
-        </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to handle form submission and AJAX request
+    document.getElementById('addBookForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
         
+        // Create form data object
+        var formData = new FormData(this);
+        
+        // Make AJAX request to add_book view
+        fetch('{% url 'add_book' %}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Book added successfully, update "Added Books" section
+                
+                // Close the modal
+                var addBookModal = new bootstrap.Modal(document.getElementById('addBookModal'));
+                addBookModal.hide();
+                
+                // Reload the "Added Books" section
+                // You may need to fetch the updated list of books and render them here
+            } else {
+                // Book adding failed, handle error (e.g., display error message)
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+
+
+<!-- View Added Books Modal -->
+<!-- View Added Books Modal -->
+<div class="modal fade" id="viewBooksModal" tabindex="-1" aria-labelledby="viewBooksModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewBooksModalLabel">View Added Books</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>ISBN</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                        <tr>
+                            <td>{{ book.title }}</td>
+                            <td>{{ book.author }}</td>
+                            <td>{{ book.isbn }}</td>
+                            <td>{{ book.category }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Users List Modal -->
+<div class="modal fade" id="usersListModal" tabindex="-1" aria-labelledby="usersListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="usersListModalLabel">Users List</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Users List Content Goes Here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Borrowed Books Modal -->
+<div class="modal fade" id="borrowedBooksModal" tabindex="-1" aria-labelledby="borrowedBooksModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="borrowedBooksModalLabel">Borrowed Books</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Borrowed Books Content Goes Here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+        
+        <!-- Buttons to Trigger Modals -->
+        <div class="mt-3">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">Add Book</button>
+<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewBooksModal">View Added Books</button>
+<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#usersListModal">Users List</button>
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#borrowedBooksModal">Borrowed Books</button>
+
+        </div>
+        
+        <!-- Table to Display Added Books (This can also be displayed in the modal) -->
         <h2 class="mt-5">Added Books</h2>
         <table class="table">
             <thead>
