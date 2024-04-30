@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Colombo City Library{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <!-- Custom CSS -->
     <style>
         /* Reset default margin and padding for body and html elements */
@@ -18,20 +20,64 @@
             background-color: #333;
             color: white;
             padding: 5px; /* Smaller padding */
-            
-            margin: 0; /* Remove any margin */
-            height: 80px; /* Set smaller height */
-            line-height: 50px; /* Center text vertically */
+            text-align: left; /* Left align the text */
+        }
+
+        .navbar-nav {
+            flex-direction: row; /* Align items horizontally */
+        }
+
+        .nav-item {
+            margin-right: 15px; /* Add spacing between nav items */
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <h1 style="color: white;">Colombo City Library</h1>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="color: aliceblue " href="#">Colombo City Library</a>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#userModal">{{ user.username }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+<form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+    {% csrf_token %}
+</form>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalLabel">User Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <!-- Add more user details here if needed -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

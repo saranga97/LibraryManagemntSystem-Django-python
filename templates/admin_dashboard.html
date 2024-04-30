@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <!-- Custom CSS -->
     <style>
+        /* Add your custom CSS here */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -20,47 +24,65 @@
     </style>
 </head>
 <body>
-    <h1>Welcome, {{ admin_user.username }}!</h1>
-    <p>Email: {{ admin_user.email }}</p>
+    <!-- Navbar -->
+    {% include 'navbar.html' %}
     
-    <h2>Add a New Book</h2>
-    <form method="post">
-        {% csrf_token %}
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title"><br>
-        <label for="author">Author:</label><br>
-        <input type="text" id="author" name="author"><br>
-        <label for="isbn">ISBN:</label><br>
-        <input type="text" id="isbn" name="isbn"><br>
-        <label for="category">Category:</label><br>
-        <input type="text" id="category" name="category"><br>
-        <button type="submit">Add Book</button>
-    </form>
+    <!-- Main content -->
+    <div class="container mt-3">
+        <h1>Welcome, {{ admin_user.username }}!</h1>
+        <p>Email: {{ admin_user.email }}</p>
+        
+        <h2>Add a New Book</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="title" class="form-label">Title:</label>
+                <input type="text" id="title" name="title" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="author" class="form-label">Author:</label>
+                <input type="text" id="author" name="author" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="isbn" class="form-label">ISBN:</label>
+                <input type="text" id="isbn" name="isbn" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Category:</label>
+                <input type="text" id="category" name="category" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Book</button>
+        </form>
+        
+        <h2 class="mt-5">Added Books</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.category }}</td>
+                    <td>
+                        <a href="{% url 'edit_book' book.id %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'remove_book' book.id %}" class="btn btn-sm btn-danger">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     
-    <h2>Added Books</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>ISBN</th>
-                <th>Category</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for book in books %}
-            <tr>
-                <td>{{ book.title }}</td>
-                <td>{{ book.author }}</td>
-                <td>{{ book.isbn }}</td>
-                <td>{{ book.category }}</td>
-                <td>
-                    <a href="{% url 'edit_book' book.id %}">Edit</a> |
-                    <a href="{% url 'remove_book' book.id %}">Remove</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,10 +1,24 @@
 {% extends 'navbar.html' %}
 
 {% block content %}
-<h1>Welcome to the Dashboard, {{ user.username }}</h1>
-<p>Email: {{ user.email }}</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h3 class="card-title">Dashboard</h3>
+                </div>
+                <div class="card-body">
+                    <h4 class="mb-4">Welcome, {{ user.username }}</h4>
+                    <p class="mb-4">Email: {{ user.email }}</p>
 
-<!-- Add links to catalog and my_books here -->
-<a href="{% url 'catalog' %}">Catalog</a>
-<a href="{% url 'my_books' %}">My Books</a>
+                    <div class="btn-group" role="group" aria-label="Dashboard Actions">
+                        <a href="{% url 'catalog' %}" class="btn btn-primary">Browse Catalog</a>
+                        <a href="{% url 'my_books' %}" class="btn btn-secondary">My Books</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
 from django.contrib.auth.models import User
 
 urlpatterns = [
-path('', views.user_login, name='user_login'),
+    path('', views.user_login, name='user_login'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('user/register/', views.user_register, name='user_register'),
     path('user/login/', views.user_login, name='user_login'),
@@ -14,4 +14,5 @@ path('', views.user_login, name='user_login'),
     path('remove_book/<int:book_id>/', views.remove_book, name='remove_book'),
     path('borrow/', views.borrow_book, name='borrow_book'),
     path('my_books/', views.my_books, name='my_books'),
+    path('accounts/', include('django.contrib.auth.urls')),  # Include authentication URLs
 ]
