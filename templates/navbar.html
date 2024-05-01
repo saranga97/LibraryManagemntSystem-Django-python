@@ -39,10 +39,10 @@
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#userModal">{{ user.username }}</a>
+                    <a class="nav-link" style="color: aliceblue" href="#" data-bs-toggle="modal" data-bs-target="#userModal">{{ user.username }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                    <a class="nav-link" style="color: aliceblue" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
 <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
     {% csrf_token %}
 </form>

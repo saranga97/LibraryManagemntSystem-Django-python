@@ -1,41 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <!-- Custom CSS -->
+{% extends 'navbar.html' %}
+
+{% block content %}
     <style>
         /* Add your custom CSS here */
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff; /* White background for container */
+            border-radius: 10px; /* Rounded corners */
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+        .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #007bff; /* Blue background color for table header */
+        color: #ffffff; /* White text color for table header */
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f2f2f2; /* Light gray background color for even rows */
+    }
+
+    .table tbody tr:hover {
+        background-color: #cce5ff; /* Light blue background color on hover */
+    }
+
+    .table td a {
+        text-decoration: none;
+        color: #ffffff; /* White color for link text */
+    }
+
+    .table td a:hover {
+        color: #ffffff; /* White color for link text on hover */
+        text-decoration: underline;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Blue background color for primary button */
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Red background color for danger button */
+    }
+
+    .mt-5 {
+        margin-top: 20px;
+    }
+    
+        h1 {
+            color: #343a40; /* Dark text color */
+            font-size: 2rem; /* Large heading size */
+            margin-bottom: 20px; /* Add some space below heading */
+            text-align: center;
+        }
+        .btn-primary,
+        .btn-secondary,
+        .btn-info,
+        .btn-success,
+        .btn-danger {
+            background-color: #007bff; /* Blue primary button color */
+            border-color: #007bff; /* Blue border color */
+        }
+        .btn-primary:hover,
+        .btn-secondary:hover,
+        .btn-info:hover,
+        .btn-success:hover,
+        .btn-danger:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            border-color: #0056b3; /* Darker border color on hover */
+        }
+        .modal-header {
+            background-color: #007bff; /* Blue header background */
+            color: #fff; /* White header text color */
+        }
+        .modal-body {
+            background-color: #f8f9fa; /* Light gray body background */
+        }
+        .modal-footer {
+            background-color: #f8f9fa; /* Light gray footer background */
+        }
         table {
             width: 100%;
             border-collapse: collapse;
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #dee2e6; /* Light gray border */
             padding: 8px;
             text-align: left;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #f2f2f2; /* Light gray header background */
         }
     </style>
-</head>
-<body>
-    <!-- Navbar -->
-    {% include 'navbar.html' %}
     
     <!-- Main content -->
-    <div class="container mt-3">
-        <h1>Welcome, {{ admin_user.username }}!</h1>
-        <p>Email: {{ admin_user.email }}</p>
-        
-       <!-- Add Book Modal -->
-<!-- Add Book Modal -->
-<!-- Add Book Modal -->
-<div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="container mt-3" style="align-items: center; text-align: center">
+        <h1>Welcome, admin {{ admin_user.username }}!</h1>
+        <p style="text-align: center">Email: {{ admin_user.email }}</p>
+        <!-- Add Book Modal -->
+<div class="modal fade" style="align-items: center ; text-align: center ; justify-items: center" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -68,6 +153,21 @@
     </div>
 </div>
 
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Book added successfully!
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     // Function to handle form submission and AJAX request
     document.getElementById('addBookForm').addEventListener('submit', function(event) {
@@ -84,14 +184,14 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Book added successfully, update "Added Books" section
+                // Book added successfully, show success modal
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
                 
-                // Close the modal
-                var addBookModal = new bootstrap.Modal(document.getElementById('addBookModal'));
-                addBookModal.hide();
-                
-                // Reload the "Added Books" section
-                // You may need to fetch the updated list of books and render them here
+                // Reload the dashboard page after 2 seconds
+                setTimeout(function() {
+                    location.reload();
+                }, 2000);
             } else {
                 // Book adding failed, handle error (e.g., display error message)
             }
@@ -101,6 +201,7 @@
         });
     });
 </script>
+
 
 
 
@@ -149,12 +250,57 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Users List Content Goes Here -->
+                <table class="table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <!-- Add more columns as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- User details will be populated here dynamically -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    // Function to fetch users and populate the table
+    function fetchUsers() {
+        fetch('{% url 'get_users' %}')
+        .then(response => response.json())
+        .then(data => {
+            const usersTableBody = document.getElementById('usersTable').getElementsByTagName('tbody')[0];
+            usersTableBody.innerHTML = ''; // Clear existing table rows
+            data.forEach(user => {
+                const row = document.createElement('tr');
+                const usernameCell = document.createElement('td');
+                const emailCell = document.createElement('td');
+                usernameCell.textContent = user.username;
+                emailCell.textContent = user.email;
+                row.appendChild(usernameCell);
+                row.appendChild(emailCell);
+                usersTableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching users:', error);
+        });
+    }
+
+    // Event listener to trigger fetchUsers function when modal is shown
+    document.getElementById('usersListModal').addEventListener('shown.bs.modal', function() {
+        fetchUsers();
+    });
+</script>
+
+
+
+
+<!-- Borrowed Books Modal -->
 <!-- Borrowed Books Modal -->
 <div class="modal fade" id="borrowedBooksModal" tabindex="-1" aria-labelledby="borrowedBooksModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -164,11 +310,31 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Borrowed Books Content Goes Here -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Book Name</th>
+                            <th>Borrower Name</th>
+                            <th>Borrow Date</th>
+                            <th>Due Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for borrowrecord in borrowrecords %}
+                        <tr>
+                            <td>{{ borrowrecord.book }}</td>
+                            <td>{{ borrowrecord.borrower }}</td>
+                            <td>{{ borrowrecord.borrow_date }}</td>
+                            <td>{{ borrowrecord.due_date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
+
 
         
         <!-- Buttons to Trigger Modals -->
@@ -181,35 +347,37 @@
         </div>
         
         <!-- Table to Display Added Books (This can also be displayed in the modal) -->
-        <h2 class="mt-5">Added Books</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>ISBN</th>
-                    <th>Category</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in books %}
-                <tr>
-                    <td>{{ book.title }}</td>
-                    <td>{{ book.author }}</td>
-                    <td>{{ book.isbn }}</td>
-                    <td>{{ book.category }}</td>
-                    <td>
-                        <a href="{% url 'edit_book' book.id %}" class="btn btn-sm btn-primary">Edit</a>
-                        <a href="{% url 'remove_book' book.id %}" class="btn btn-sm btn-danger">Remove</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<h2 class="mt-5">Added Books</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Category</th>
+            <th>Availability</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>{{ book.isbn }}</td>
+            <td>{{ book.category }}</td>
+            <td>{{ book.is_available }}</td>
+            <td>
+                <a href="{% url 'edit_book' book.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{% url 'remove_book' book.id %}" class="btn btn-sm btn-danger">Remove</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
     </div>
     
     <!-- Bootstrap JS (optional) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}

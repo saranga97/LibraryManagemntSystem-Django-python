@@ -1,30 +1,196 @@
-<!-- library/templates/catalog.html -->
+{% extends 'navbar.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalog</title>
-</head>
-<body>
-    <h2>Available Books</h2>
-    <ul>
-        {% for book in books %}
-        <li>
-            <strong>Title:</strong> {{ book.title }}<br>
-            <strong>Author:</strong> {{ book.author }}<br>
-            <strong>ISBN:</strong> {{ book.isbn }}<br>
-            <strong>Category:</strong> {{ book.category }}<br>
-            {% if book.is_available %}
-            <form method="post" action="{% url 'borrow_book' %}">
-                {% csrf_token %}
-                <input type="hidden" name="book_id" value="{{ book.id }}">
-                <button type="submit">Borrow</button>
-            </form>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% block content %}
+    <style>
+        body {
+            background-color: #f9f9f9; /* Light background color */
+            font-family: 'Poppins', sans-serif; /* Modern, professional font */
+            color: #333; /* Dark text color */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column; /* Center content vertically */
+        }
+
+        .search-container {
+            margin-top: 20px;
+            text-align: center;
+            width: 100%; /* Full width */
+            padding: 20px; /* Add padding */
+            box-sizing: border-box; /* Include padding in width */
+            top: 0; /* Place at top of screen */
+        }
+
+        .search-input {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 60%;
+            font-size: 14px;
+        }
+
+        .card-container {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .card {
+            width: 30%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            overflow: hidden;
+            transition: transform 0.3s;
+            display: none; /* Initially hide all cards */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            padding: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 8px;
+
+            color: #000000;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.4s;
+        }
+
+        .back-btn:hover {
+            background-color: #d9dde3;
+        }
+
+        .availability {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .card p {
+            margin: 5px 0;
+        }
+    </style>
+
+    <div class="container">
+    <button class="back-btn" onclick="window.history.back()">
+    &larr;  Back to Dashboard
+</button>
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by title or author">
+        </div>
+
+        <div class="card-container mt-5">
+            {% for book in books %}
+                <div class="card" data-title="{{ book.title|lower }}" data-author="{{ book.author|lower }}">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ book.title }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Author: {{ book.author }}</p>
+                        <p>ISBN: {{ book.isbn }}</p>
+                        <p>Category: {{ book.category }}</p>
+                        {% if book.is_available %}
+                            <p class="availability">Availability: Available</p>
+                            <form method="post" action="{% url 'borrow_book' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="book_id" value="{{ book.id }}">
+                                <button type="submit" class="btn">Borrow</button>
+                            </form>
+                        {% else %}
+                            <p class="availability">Availability: Not Available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.card');
+
+        // Show all cards initially
+        cards.forEach(card => {
+            card.style.display = 'block';
+        });
+
+        // Get the input field
+        const searchInput = document.getElementById('searchInput');
+
+        // Add event listener for input field
+        searchInput.addEventListener('input', function() {
+            const searchQuery = this.value.trim().toLowerCase();
+
+            // Loop through each card and show/hide based on search query
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                const author = card.getAttribute('data-author');
+
+                if (title.includes(searchQuery) || author.includes(searchQuery)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Ensure all cards are shown when search input is empty
+        searchInput.addEventListener('blur', function() {
+            if (this.value.trim() === '') {
+                cards.forEach(card => {
+                    card.style.display = 'block';
+                });
+            }
+        });
+    });
+</script>
+
+
+
+
+{% endblock %}

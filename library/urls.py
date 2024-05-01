@@ -1,6 +1,9 @@
 from django.urls import path,include
 from . import views
 from django.contrib.auth.models import User
+from .views import get_users
+from .views import user_logout
+from .views import SignUpView
 
 urlpatterns = [
     path('', views.user_login, name='user_login'),
@@ -16,4 +19,7 @@ urlpatterns = [
     path('my_books/', views.my_books, name='my_books'),
     path('accounts/', include('django.contrib.auth.urls')),  # Include authentication URLs
     path('add_book/', views.add_book, name='add_book'),
+    path('logout/', user_logout, name='user_logout'),
+    path('get_users/', get_users, name='get_users'),
+    path('signup/', SignUpView.as_view(), name='signup'),
 ]
