@@ -3,12 +3,14 @@
 {% block content %}
     <style>
         body {
-            background-color: #f9f9f9; /* Light background color */
-            font-family: 'Poppins', sans-serif; /* Modern, professional font */
-            color: #333; /* Dark text color */
-            margin: 0;
-            padding: 0;
-        }
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://images.pexels.com/photos/2908984/pexels-photo-2908984.jpeg'); /* Use the correct path */
+    background-size: cover;
+    background-position: center;
+}
 
         .container {
             display: flex;
@@ -17,90 +19,78 @@
             min-height: 100vh;
         }
 
-        .card-container {
-            width: 90%;
+        .dashboard-box {
+            width: 100%;
             max-width: 1200px;
-        }
-
-        .card {
-            border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             background-color: #fff;
-        }
-
-        .card-header {
-            padding: 20px;
-            background-color: #007bff;
-            color: #fff;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-
-        .card-title {
-            margin: 0;
-            font-size: 24px;
-        }
-
-        .card-body {
+            border-radius: 10px;
             padding: 40px;
+            text-align: center;
         }
 
-        .btn-group {
+        h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            justify-content: center;
             margin-top: 20px;
         }
 
         .btn {
-            padding: 12px 25px;
+            padding: 15px 30px;
             border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.3s, color 0.3s;
+            font-size: 18px;
+            margin: 0 10px;
+            text-decoration: none;
+            color: #fff;
+            transition: background-color 0.3s;
         }
 
         .btn-primary {
             background-color: #007bff;
-            color: #fff;
-            border: none;
         }
 
         .btn-secondary {
             background-color: #6c757d;
-            color: #fff;
-            border: none;
         }
 
         .btn:hover {
             opacity: 0.8;
         }
 
-        h4 {
-            margin-bottom: 20px;
-        }
-
-        p {
-            margin-bottom: 20px;
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px 0;
+            background-color: #f0f0f0;
+            border-top: 1px solid #ddd;
         }
     </style>
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card-container mt-5">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Dashboard</h3>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="mb-4">Welcome, {{ user.username }}</h4>
-                            <p class="mb-4">Email: {{ user.email }}</p>
+        <div class="dashboard-box">
+            <h1>Dashboard</h1>
+            <p class="welcome-message">Welcome, {{ user.username }}</p>
+            <p>Email: {{ user.email }}</p>
 
-                            <div class="btn-group" role="group" aria-label="Dashboard Actions">
-                                <a href="{% url 'catalog' %}" class="btn btn-primary">Browse Catalog</a>
-                                <a href="{% url 'my_books' %}" class="btn btn-secondary">My Books</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="dashboard-actions">
+                <a href="{% url 'catalog' %}" class="btn btn-primary">Browse Catalog</a>
+                <a href="{% url 'my_books' %}" class="btn btn-secondary">My Books</a>
             </div>
         </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Project done by Githmin Nelaka Saparamadu<br>Student id S1033617</p>
     </div>
 {% endblock %}
