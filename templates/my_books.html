@@ -8,6 +8,7 @@
             color: #333; /* Dark text color */
             margin: 0;
             padding: 0;
+            min-height: 100vh;
         }
 
         .container {
@@ -69,9 +70,9 @@
 
 
     <div class="container">
-       <button class="back-btn" onclick="window.history.back()">
-    &larr;  Back to Dashboard
-</button>
+        <button class="back-btn" onclick="window.history.back()">
+            &larr; Back to Dashboard
+        </button>
         <h2>My Borrowed Books</h2>
         <table>
             <thead>
@@ -79,6 +80,7 @@
                     <th>Title</th>
                     <th>Borrow Date</th>
                     <th>Due Date</th>
+                    <th>Action</th> <!-- Add Action column for return button -->
                 </tr>
             </thead>
             <tbody>
@@ -87,6 +89,16 @@
                     <td>{{ record.book.title }}</td>
                     <td>{{ record.borrow_date }}</td>
                     <td>{{ record.due_date }}</td>
+                    <td>
+                        {% if record.returned %}
+                            Returned
+                        {% else %}
+                            <form method="post" action="{% url 'return_book' record.id %}">
+                                {% csrf_token %}
+                                <button type="submit">Return</button>
+                            </form>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

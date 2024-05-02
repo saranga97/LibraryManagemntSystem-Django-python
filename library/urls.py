@@ -1,7 +1,7 @@
 from django.urls import path,include
 from . import views
 from django.contrib.auth.models import User
-from .views import get_users
+from .views import get_users, return_book
 from .views import user_logout
 from .views import SignUpView
 
@@ -22,4 +22,6 @@ urlpatterns = [
     path('logout/', user_logout, name='user_logout'),
     path('get_users/', get_users, name='get_users'),
     path('signup/', SignUpView.as_view(), name='signup'),
+    path('return_book/<int:record_id>/', return_book, name='return_book'),
 ]
+
