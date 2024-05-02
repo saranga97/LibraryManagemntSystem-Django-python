@@ -5,6 +5,7 @@
         /* Add your custom CSS here */
         body {
             background-color: #f9f9f9;
+            {#background-image: image('');#}
             font-family: 'Poppins', sans-serif;
             color: #333;
             margin: 0;
@@ -203,8 +204,6 @@
 </script>
 
 
-
-
 <!-- View Added Books Modal -->
 <!-- View Added Books Modal -->
 <div class="modal fade" id="viewBooksModal" tabindex="-1" aria-labelledby="viewBooksModalLabel" aria-hidden="true">
@@ -317,6 +316,7 @@
                             <th>Borrower Name</th>
                             <th>Borrow Date</th>
                             <th>Due Date</th>
+                            <th>Returned</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -326,6 +326,7 @@
                             <td>{{ borrowrecord.borrower }}</td>
                             <td>{{ borrowrecord.borrow_date }}</td>
                             <td>{{ borrowrecord.due_date }}</td>
+                            <td>{{ borrowrecord.returned }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -347,7 +348,7 @@
         </div>
         
         <!-- Table to Display Added Books (This can also be displayed in the modal) -->
-<h2 class="mt-5">Added Books</h2>
+<h2 class="mt-5">Books Inventory</h2>
 <table class="table">
     <thead>
         <tr>
