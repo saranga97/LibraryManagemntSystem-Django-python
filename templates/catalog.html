@@ -115,12 +115,21 @@
         .card p {
             margin: 5px 0;
         }
+
+        /* Footer styles */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px 0;
+            background-color: #f0f0f0;
+            border-top: 1px solid #ddd;
+        }
     </style>
 
     <div class="container">
-    <button class="back-btn" onclick="window.history.back()">
-    &larr;  Back to Dashboard
-</button>
+        <button class="back-btn" onclick="window.history.back()">
+            &larr; Back to Dashboard
+        </button>
         <div class="search-container">
             <input type="text" id="searchInput" class="search-input" placeholder="Search by title or author">
         </div>
@@ -150,47 +159,50 @@
             {% endfor %}
         </div>
     </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const cards = document.querySelectorAll('.card');
+    
+    <!-- Footer -->
+    <div class="footer">
+        <p>Project done by Githmin Nelaka Saparamadu<br>Student id S1033617</p>
+    </div>
 
-        // Show all cards initially
-        cards.forEach(card => {
-            card.style.display = 'block';
-        });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
 
-        // Get the input field
-        const searchInput = document.getElementById('searchInput');
-
-        // Add event listener for input field
-        searchInput.addEventListener('input', function() {
-            const searchQuery = this.value.trim().toLowerCase();
-
-            // Loop through each card and show/hide based on search query
+            // Show all cards initially
             cards.forEach(card => {
-                const title = card.getAttribute('data-title');
-                const author = card.getAttribute('data-author');
+                card.style.display = 'block';
+            });
 
-                if (title.includes(searchQuery) || author.includes(searchQuery)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
+            // Get the input field
+            const searchInput = document.getElementById('searchInput');
+
+            // Add event listener for input field
+            searchInput.addEventListener('input', function() {
+                const searchQuery = this.value.trim().toLowerCase();
+
+                // Loop through each card and show/hide based on search query
+                cards.forEach(card => {
+                    const title = card.getAttribute('data-title');
+                    const author = card.getAttribute('data-author');
+
+                    if (title.includes(searchQuery) || author.includes(searchQuery)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // Ensure all cards are shown when search input is empty
+            searchInput.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    cards.forEach(card => {
+                        card.style.display = 'block';
+                    });
                 }
             });
         });
-
-        // Ensure all cards are shown when search input is empty
-        searchInput.addEventListener('blur', function() {
-            if (this.value.trim() === '') {
-                cards.forEach(card => {
-                    card.style.display = 'block';
-                });
-            }
-        });
-    });
-</script>
-
-
-
+    </script>
 
 {% endblock %}
