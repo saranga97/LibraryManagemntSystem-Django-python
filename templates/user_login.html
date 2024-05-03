@@ -1,0 +1,154 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://images.pexels.com/photos/2908984/pexels-photo-2908984.jpeg'); /* Use the correct path */
+            background-size: cover;
+            background-position: center;
+        }
+        form {
+            width: 400px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        h1 {
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .popup {
+            position: fixed;
+            top: 15%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(213, 77, 77, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 9999;
+            transition: opacity 0.5s;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .show-popup {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+
+    <form method="post" id="loginForm">
+        {% csrf_token %}
+        <h1>User Login</h1>
+        {% if form.non_field_errors %}
+            <ul>
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class="form-group">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {% if form.username.errors %}
+                <ul>
+                    {% for error in form.username.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            {% if form.password.errors %}
+                <ul>
+                    {% for error in form.password.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <button type="submit">Login</button>
+        <p class="text-center">Don't have an account? <a href="{% url 'user_register' %}">Sign Up</a></p>
+    </form>
+
+    <!-- Popup for incorrect username or password -->
+    <div id="popup" class="popup">
+        <p id="popupMessage"></p>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const popup = document.getElementById('popup');
+        const popupMessage = document.getElementById('popupMessage');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Check if the form is valid (you may need to adjust this based on your form validation logic)
+            const isValid = form.checkValidity();
+
+            if (!isValid) {
+                popupMessage.textContent = 'Please correct the errors in the form.';
+                popup.classList.add('show-popup');
+                setTimeout(function() {
+                    popup.classList.remove('show-popup');
+                }, 2000);
+            } else {
+                // If login is successful, submit the form
+                form.submit();
+            }
+        });
+    </script>
+{% endblock %}
